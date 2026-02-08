@@ -71,3 +71,4 @@ media/~*.*
 archieve/
 requirement-strict.txt
 requirements-general.txt
+requirements-*.txt
