@@ -1,49 +1,37 @@
-# Core Streamlit
+# Core
 streamlit
 
-# LangChain Ecosystem
+# LangChain ecosystem
 langchain
-langchain_core
+langchain-core
 langchain-community
-langchain-openai
-langchain-google-genai
+langchain-text-splitters
 langchain-groq
-langgraph
+langchain-google-genai
+langchain-openai
 langchain-huggingface
-langchain_text_splitters
-langchain_community
-langchain_qdrant
+langchain-qdrant
+langgraph
 
-# Vector Embedding
+# Vector store
+faiss-cpu
+qdrant-client
+
+# Embeddings
 sentence-transformers
 einops
 
-# Vector Store
-faiss-cpu
-
-# Environment Management
-python-dotenv
-
-# Data Processing
+# Data & text processing
 pandas
 numpy
-
-# Text Processing
 pypdf
 python-docx
 unstructured[docx]
 
 # Utilities
+python-dotenv
 pydantic
 tiktoken
 
-# Visualization (optional, for enhanced charts)
+# Optional visualization
 plotly
-
-# notebook kernel for testing
-ipykernel
-
-# Cloud Vector Store
-qdrant_client
-
--e .
