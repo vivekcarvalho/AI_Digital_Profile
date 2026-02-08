@@ -19,7 +19,8 @@ from typing import List, Optional
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from data.build_vector_store import NomicEmbedding
+# from data.build_vector_store import NomicEmbedding
+from scripts.setup_vectoredb import NomicEmbedding
 
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import (
