@@ -9,7 +9,7 @@ A recruiter-facing digital profile with a **LangGraph multi-agent chatbot** back
 | Feature | How it works |
 |---|---|
 | **LangGraph agentic pipeline** | Every query passes through Router → Retriever → Validator → Responder agents with conditional edges. Off-topic and insufficient-context queries are handled gracefully by dedicated fallback nodes. |
-| **Metadata-filtered RAG** | The pre-built FAISS vector store tags every chunk with a `topic` field (Introduction, Education, Job Summary, Project Details, Skills, …). The Router classifies the query, and the Retriever passes an equality filter to `as_retriever()` so only relevant chunks are returned. |
+| **Metadata-filtered RAG** | The pre-built FAISS vector store tags every chunk with a `title` field (Introduction, Education, Job Summary, Project Details, Skills, …). The Router classifies the query, and the Retriever passes an equality filter to `as_retriever()` so only relevant chunks are returned. |
 | **Resume-style Home page** | All content is sourced from `About_me.docx`. Education, experience, and projects are rendered as an interactive timeline; skills are grouped & colour-coded by category. |
 | **Session memory** | The last 20 messages are kept in-memory and the last 3 exchanges are fed into the Responder prompt for conversational continuity. |
 
@@ -18,7 +18,7 @@ A recruiter-facing digital profile with a **LangGraph multi-agent chatbot** back
 ## 🏗️ Project Structure
 
 ```
-ai_profile_website/
+ai_digital_profile/
 ├── app.py                          # Streamlit app – Home & Chat pages
 ├── config/
 │   ├── __init__.py
@@ -103,7 +103,7 @@ User Query
 └────┬─────┘
      │
      ▼
-┌───────────┐  INSUFFICIENT  ┌──────────────┐
+┌───────────┐  INSUFFICIENT   ┌──────────────┐
 │ VALIDATOR │ ──────────────► │ INSUFFICIENT │ ► END
 └────┬──────┘                 └──────────────┘
      │ SUFFICIENT
@@ -121,13 +121,13 @@ User Query
 | Family Background | Personal background |
 | Education | B.Eng & M.Sc. details |
 | Job Summary | TCS, Accenture, Clover roles |
-| Project Details | All 12+ project write-ups |
+| Project Details | All projects write-ups |
 | Skills | AI/ML, programming, data-eng skills |
 | Honors and Awards | TCS & Accenture awards |
 | Licences and Certifications | Databricks cert, M.Sc. credential |
-| Hobbies | *(add to docx when ready)* |
-| Languages Known | *(add to docx when ready)* |
-| Weakness | *(add to docx when ready)* |
+| Hobbies | What keeps me moving |
+| Languages Known | Language than Vivek speaks |
+| Weakness | His weaknesses |
 | Role Suitability | Why he's the ideal fit |
 
 ---
@@ -142,16 +142,13 @@ User Query
 | **LLM / model** | Set `LLM_PROVIDER` and `MODEL_NAME` in `.env` |
 | **Colours & layout** | Edit `_CSS` string in `src/ui_components.py` |
 | **Agent prompts** | Edit the prompt constants in `config/prompts.py` |
-| **Retrieval count** | Set `TOP_K_RESULTS` in `.env` (default 4) |
+| **Retrieval count** | Set `TOP_K_RESULTS` and `FETCH_RESULTS` in `.env` (default 4 and 10) |
 
 ---
 
 ## 🧪 Testing
 
 ```bash
-# Unit tests (mocked – no API key required)
-python -m pytest tests/ -v
-
 # Manual chatbot smoke-test (API key required)
 python scripts/test_chatbot.py
 ```
@@ -189,7 +186,7 @@ The container exposes port **8501**. Secrets are injected via the `.env` file (m
 
 ## 🔐 Security
 
-- **Never** commit `.env` or raw API keys.
+- **Never** commit `.env`, `data/vector_store`, or raw API keys.
 - Use Streamlit Secrets or platform-native secret managers in production.
 - The vector store contains only professional profile data — no PII beyond what you choose to include.
 
@@ -226,4 +223,4 @@ Personal / portfolio use. Feel free to fork and adapt for your own profile.
 
 ---
 
-*Built with LangGraph, LangChain, FAISS, and Streamlit.*
+*Built with LangGraph, LangChain, FAISS, Groq, Nomic AI, and Streamlit.*

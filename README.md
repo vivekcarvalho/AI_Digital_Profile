@@ -9,7 +9,7 @@ A recruiter-facing digital profile with a **LangGraph multi-agent chatbot** back
 | Feature | How it works |
 |---|---|
 | **LangGraph agentic pipeline** | Every query passes through Router → Retriever → Validator → Responder agents with conditional edges. Off-topic and insufficient-context queries are handled gracefully by dedicated fallback nodes. |
-| **Metadata-filtered RAG** | The pre-built FAISS vector store tags every chunk with a `topic` field (Introduction, Education, Job Summary, Project Details, Skills, …). The Router classifies the query, and the Retriever passes an equality filter to `as_retriever()` so only relevant chunks are returned. |
+| **Metadata-filtered RAG** | The pre-built FAISS vector store tags every chunk with a `title` field (Introduction, Education, Job Summary, Project Details, Skills, …). The Router classifies the query, and the Retriever passes an equality filter to `as_retriever()` so only relevant chunks are returned. |
 | **Resume-style Home page** | All content is sourced from `About_me.docx`. Education, experience, and projects are rendered as an interactive timeline; skills are grouped & colour-coded by category. |
 | **Session memory** | The last 20 messages are kept in-memory and the last 3 exchanges are fed into the Responder prompt for conversational continuity. |
 
@@ -18,7 +18,7 @@ A recruiter-facing digital profile with a **LangGraph multi-agent chatbot** back
 ## 🏗️ Project Structure
 
 ```
-ai_profile_website/
+ai_digital_profile/
 ├── app.py                          # Streamlit app – Home & Chat pages
 ├── config/
 │   ├── __init__.py
@@ -32,16 +32,11 @@ ai_profile_website/
 │   ├── rag_engine.py               # Loads FAISS, exposes metadata-filtered retrieve()
 │   ├── chatbot.py                  # LangGraph graph definition + ProfileChatbot façade
 │   └── ui_components.py            # All CSS & reusable rendering functions
-├── assets/
+├── media/
 │   └── profile_photo.jpg           # Professional headshot (400×400 px recommended)
 ├── scripts/
 │   ├── setup_vectordb.py           # One-time script to (re-)build the vector store
-│   └── test_chatbot.py             # Manual smoke-test of the chatbot
-├── tests/
-│   ├── test_rag_engine.py          # Unit tests – RAG engine
-│   └── test_chatbot.py             # Unit tests – chatbot & graph nodes
-├── Dockerfile                      # Container image
-├── docker-compose.yml              # Single-command local deployment
+│   └── test_chatbot.py             # Manual smoke-test of the chatbot along with RAG
 ├── requirements.txt                # Python dependencies
 ├── .env.example                    # Environment variables template
 └── README.md                       # This file
@@ -54,7 +49,7 @@ ai_profile_website/
 ### 1. Prerequisites
 
 - Python 3.9+
-- An OpenAI **or** Google API key
+- An OpenAI **or** Google **or** any LLM API key
 - The pre-built `data/vector_store/` directory already in the repo (no rebuild needed)
 
 ### 2. Install dependencies
@@ -99,7 +94,7 @@ User Query
      │ valid topic
      ▼
 ┌──────────┐
-│RETRIEVER │   metadata filter: {"topic": <topic>}
+│RETRIEVER │   metadata filter: {"title": <topic>}
 └────┬─────┘
      │
      ▼
@@ -122,7 +117,7 @@ User Query
 
 2. **Retriever** (`retriever_node`)
    - Calls `rag.retrieve(query, topic)` with metadata filter
-   - FAISS only returns chunks where `metadata["topic"] == topic`
+   - FAISS only returns chunks where `metadata["title"] == topic`
    - Returns top-k results (default: 4)
 
 3. **Validator** (`validator_node`)
@@ -146,7 +141,7 @@ User Query
 ### Conditional Edges
 
 - **After Router**: Routes to `off_topic` if topic="off_topic", else `retriever`
-- **After Validator**: Routes to `responder` if SUFFICIENT, else `insufficient`
+- **After Validator**: Routes to `responder` if PASS, else `insufficient`
 
 ---
 
@@ -179,16 +174,13 @@ User Query
 | **LLM / model** | Set `LLM_PROVIDER` and `MODEL_NAME` in `.env` |
 | **Colours & layout** | Edit `_CSS` string in `src/ui_components.py` |
 | **Agent prompts** | Edit the prompt constants in `config/prompts.py` |
-| **Retrieval count** | Set `TOP_K_RESULTS` in `.env` (default 4) |
+| **Retrieval count** | Set `TOP_K_RESULTS` and `FETCH_RESULTS` in `.env` (default 4 and 10) |
 
 ---
 
 ## 🧪 Testing
 
 ```bash
-# Unit tests (mocked – no API key required)
-python -m pytest tests/ -v
-
 # Manual chatbot smoke-test (API key required)
 python scripts/test_chatbot.py
 ```
@@ -217,16 +209,18 @@ The container exposes port **8501**. Secrets are injected via the `.env` file (m
 
 ### Streamlit Cloud (recommended)
 
-1. Push the repo to GitHub (make sure `data/vector_store/` is committed).
-2. Go to [streamlit.io/cloud](https://streamlit.io/cloud) → New app → point at `app.py`.
-3. Add `OPENAI_API_KEY` (or `GOOGLE_API_KEY`) in **Advanced settings → Secrets**.
-4. Click **Deploy**.
+1. Push the repo to GitHub (make sure `data/vector_store/` is not committed).
+2. Host `data/vector_store/` on separate vector store cloud, and obtain API key.
+3. Go to [streamlit.io/cloud](https://streamlit.io/cloud) → New app → point at `app.py`.
+4. Add `OPENAI_API_KEY` (or `GOOGLE_API_KEY`) in **Advanced settings → Secrets**.
+5. Add `VECTOR_CLOUD_API_KEY` in **Advanced settings → Secrets**.
+6. Click **Deploy**.
 
 ---
 
 ## 🔐 Security
 
-- **Never** commit `.env` or raw API keys.
+- **Never** commit `.env`, `data/vector_store/` or raw API keys.
 - Use Streamlit Secrets or platform-native secret managers in production.
 - The vector store contains only professional profile data — no PII beyond what you choose to include.
 
@@ -263,4 +257,18 @@ Personal / portfolio use. Feel free to fork and adapt for your own profile.
 
 ---
 
-*Built with LangGraph, LangChain, FAISS, and Streamlit.*
+## 🙏 Acknowledgments
+
+*Built with LangGraph, LangChain, FAISS, Groq, Nomic AI, and Streamlit.*
+
+- [LangGraph](https://github.com/langchain-ai/langgraph) - Agent orchestration framework
+- [Groq](https://groq.com/) - Fast LLM inference
+- [Streamlit](https://streamlit.io/) - Web application framework
+- [FAISS](https://ai.meta.com/tools/faiss/) - Vector Data Store
+- [Nomic-AI](https://huggingface.co/nomic-ai/nomic-embed-text-v1) - A Reproducible Long Context (8192) Text Embedder.
+
+
+## 📧 Contact
+
+For questions or support, please open an issue on GitHub or contact [Vivek Carvalho](mailto:vivek_carvalho@yahoo.co.in)
+🤝 Interested in collaborating or exchanging ideas? Let’s connect on [LinkedIn] (https://www.linkedin.com/in/vivekcarvalho/)

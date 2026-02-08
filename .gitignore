@@ -62,9 +62,13 @@ development_notebooks/
 build_vector_store.py
 update_vector_store.py
 
-# Old Requirements
-Requirements-*.txt
-
 # Data Related Documents
 media/About_me.docx
 media/Claude_AI_prompt.txt
+media/~*.*
+
+# Backup files
+archieve/
+requirement-strict.txt
+requirements-general.txt
+requirements-*.txt
