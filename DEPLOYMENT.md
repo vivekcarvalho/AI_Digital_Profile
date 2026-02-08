@@ -61,8 +61,8 @@ Complete guide for deploying the AI-Powered Digital Profile Website to productio
    - After first deployment, the app will fail (no vector DB)
    - Run locally: `python scripts/setup_vectordb.py`
    - The `data/vector_store` directory will be created
-   - push to cloud Vector Store and map API key in stremlit cloud's secrets (<span style="color:red;">**If Vector store contains PII info**</span>):
-   - Commit and push to GitHub (<span style="color:green;">**If Vector store contains no PII info**</span>):
+   - push to cloud Vector Store and map API key in stremlit cloud's secrets (<p style="color:red;">If Vector store contains PII info</p>):
+   - Commit and push to GitHub (<p style="color:green;">If Vector store contains no PII info</p>):
    ```bash
    git add data/vector_store
    git commit -m "Add vector database"

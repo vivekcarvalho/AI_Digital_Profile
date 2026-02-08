@@ -21,6 +21,12 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from data.build_vector_store import NomicEmbedding
 
+from langchain_qdrant import QdrantVectorStore
+from qdrant_client import (
+    QdrantClient,
+    models as Qdmodels
+)
+
 from config import settings
 
 
@@ -60,9 +66,9 @@ class RAGEngine:
         raise ValueError(f"Unsupported LLM_PROVIDER: {settings.LLM_PROVIDER}")
 
     # ------------------------------------------------------------------
-    # Load from disk (once)
+    # Option1: Load from disk (once)
     # ------------------------------------------------------------------
-    def load(self) -> None:
+    def load_local(self) -> None:
         """Load the pre-built FAISS store from disk."""
         if not os.path.exists(self.vector_store_path):
             raise FileNotFoundError(
@@ -74,6 +80,59 @@ class RAGEngine:
             self.embeddings,
             allow_dangerous_deserialization=True,
         )
+        print(f"✅ Success: Local vector store at {self.vector_store_path} is intialized!")
+
+    # ------------------------------------------------------------------
+    # Option2: Load from Remote (once)
+    # ------------------------------------------------------------------
+    def load_remote(self) -> None:
+        """Load vector store from the remote hosting."""
+        if not settings.VECTOR_STORE_HOST:
+            raise ValueError(f"Vector Store Host details are not provided in VECTOR_STORE_HOST property")
+        
+        url = settings.VECTORDB_URL
+        api_key = settings.VECTORDB_API_KEY
+        collection = settings.VECTORDB_COLLECTION_NAME
+
+        if not url:
+            raise ValueError(f"URL for remote vector store cannot be empty")
+        elif not api_key:
+            raise ValueError(f"API_KEY to remote vector store cannont be empty")
+        elif not collection:
+            raise ValueError(f"Collection Name of vector store cannot be empty")
+        
+        try:
+            remote_client = QdrantClient(
+                url= url,
+                api_key=api_key
+            )
+            print(f"✅ Success: Remote vector client intialized!")
+        except Exception as e:
+            print(f"❌ Error connecting remote vector client: {e}")
+
+        try:
+            self.vector_store = QdrantVectorStore(
+                client= remote_client,
+                collection_name= collection,
+                embedding= self.embeddings,
+                distance= Qdmodels.Distance.COSINE,
+                metadata_payload_key= "metadata['title']"
+            )
+            print(f"✅ Success: Remote vector store {collection} is intialized!")
+        except Exception as e:
+            print(f"❌ Error Occured: {e}")
+        
+
+        # if not os.path.exists(self.vector_store_path):
+        #     raise FileNotFoundError(
+        #         f"Vector store not found at '{self.vector_store_path}'.\n"
+        #         "Build it once with:  python scripts/setup_vectordb.py"
+        #     )
+        # self.vector_store = FAISS.load_local(
+        #     self.vector_store_path,
+        #     self.embeddings,
+        #     allow_dangerous_deserialization=True,
+        # )
 
     # ------------------------------------------------------------------
     # Core retrieval – the only public query method
@@ -97,19 +156,44 @@ class RAGEngine:
             Chunk texts ordered by similarity (most relevant first).
         """
         if self.vector_store is None:
-            raise RuntimeError("Vector store not loaded. Call .load() first.")
+            raise RuntimeError("Vector store not loaded. Call .load_local() or .load_remote() first.")
 
-        # Build the search filter when a topic is given
-        search_filter = (
-            {"title": topic} if topic else None
-        )
+        # Setting seach arguments for local vector store
+        if settings.VECTOR_STORE_LOCATION.lower() == "local":
+            # Build the search filter when a topic is given
+            search_filter = (
+                {"title": topic} if topic else None
+            )
+
+            # # as_retriever with dynamic search_kwargs lets us pass the filter
+            # retriever = self.vector_store.as_retriever(
+            #     search_kwargs={
+            #         "k": settings.TOP_K_RESULTS,
+            #         # "fetch_k": settings.FETCH_RESULTS,
+            #         **({"filter": search_filter} if search_filter else {}),
+            #     }
+            # )
+
+        # Setting search argument for Remote(QDRANT) vector store
+        elif settings.VECTOR_STORE_LOCATION.lower() == "remote":
+            if settings.VECTOR_STORE_HOST.upper() == "QDRANT":
+                # Build the search filter when a topic is given
+                search_filter = Qdmodels.Filter(
+                    must= [
+                        Qdmodels.FieldCondition(
+                            key= "metadata.title",
+                            match= Qdmodels.MatchValue(
+                                value= topic
+                            )
+                        )
+                    ]
+                )
 
         # as_retriever with dynamic search_kwargs lets us pass the filter
         retriever = self.vector_store.as_retriever(
-            search_kwargs={
-                "k": settings.TOP_K_RESULTS,
-                "fetch_k": settings.FETCH_RESULTS,
-                **({"filter": search_filter} if search_filter else {}),
+            search_kwargs = {
+                "k" : settings.TOP_K_RESULTS,
+                **({"filter": search_filter} if search_filter else {})
             }
         )
 
@@ -134,5 +218,9 @@ def get_rag_engine() -> RAGEngine:
     global _engine
     if _engine is None:
         _engine = RAGEngine()
-        _engine.load()
+        if settings.VECTOR_STORE_LOCATION.lower() == "local":
+            _engine.load_local()
+        else:
+            _engine.load_remote()
+            
     return _engine
