@@ -18,7 +18,7 @@ A recruiter-facing digital profile with a **LangGraph multi-agent chatbot** back
 ## 🏗️ Project Structure
 
 ```
-ai_profile_website/
+ai_digital_profile/
 ├── app.py                          # Streamlit app – Home & Chat pages
 ├── config/
 │   ├── __init__.py
