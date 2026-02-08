@@ -45,5 +45,3 @@ ipykernel
 
 # Cloud Vector Store
 qdrant_client
-
--e .
