@@ -124,12 +124,19 @@ Keep the tone courteous — never dismissive."""
 # ---------------------------------------------------------------------------
 # 6. INSUFFICIENT-CONTEXT FALLBACK – when chunks don't cover the query
 # ---------------------------------------------------------------------------
-INSUFFICIENT_CONTEXT_PROMPT = """The user asked: "{query}"
+# INSUFFICIENT_CONTEXT_PROMPT = """The user asked: "{query}"
+
+# The retrieved information does not cover this question well enough.
+# Reply honestly, acknowledge that the specific detail isn't available right now,
+# and suggest related topics the user might find interesting.
+# End by inviting them to try another question.
+# """
+INSUFFICIENT_CONTEXT_PROMPT = f"""The user asked: {{query}}
 
 The retrieved information does not cover this question well enough.
-Reply honestly, acknowledge that the specific detail isn't available right now,
-and suggest related topics the user might find interesting.
-End by inviting them to try another question."""
+Reply politely, acknowledge that the specific detail are not provided in the knowledge base
+and suggest if they want to explore more on Vivek's {_TOPIC_LIST}.
+"""
 
 # ---------------------------------------------------------------------------
 # 7. GREETING – generated once at session start

@@ -1,5 +1,4 @@
-# Editable install with no version control (ai_profile_website==0.1.0)
--e .
+-e git+https://github.com/vivekcarvalho/AI_Digital_Profile.git@647fbcf032456719b917fda5734999c0e0d4733d#egg=ai_profile_website
 aiofiles==25.1.0
 aiohappyeyeballs==2.6.1
 aiohttp==3.13.3
@@ -37,13 +36,17 @@ GitPython==3.1.46
 google-auth==2.48.0
 google-genai==1.61.0
 groq==0.37.1
+grpcio==1.78.0
 h11==0.16.0
+h2==4.3.0
 hf-xet==1.2.0
+hpack==4.1.0
 html5lib==1.1
 httpcore==1.0.9
 httpx==0.28.1
 httpx-sse==0.4.3
 huggingface_hub==0.36.1
+hyperframe==6.1.0
 idna==3.11
 ipykernel==7.1.0
 ipython==9.10.0
@@ -66,6 +69,7 @@ langchain-google-genai==4.2.0
 langchain-groq==1.1.1
 langchain-huggingface==1.2.0
 langchain-openai==1.1.7
+langchain-qdrant==1.1.0
 langchain-text-splitters==1.1.0
 langdetect==1.0.9
 langgraph==1.0.7
@@ -98,6 +102,7 @@ pexpect==4.9.0
 pillow==12.1.0
 platformdirs==4.5.1
 plotly==6.5.2
+portalocker==3.2.0
 prompt_toolkit==3.0.52
 propcache==0.4.1
 protobuf==6.33.5
@@ -123,6 +128,7 @@ python-oxmsg==0.0.2
 pytz==2025.2
 PyYAML==6.0.3
 pyzmq==27.1.0
+qdrant-client==1.16.2
 RapidFuzz==3.14.3
 referencing==0.37.0
 regex==2026.1.15
