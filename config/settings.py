@@ -1,5 +1,5 @@
 """
-Configuration settings for the AI Profile Website.
+Configuration settings for the AI Digital Profile.
 
 Every tuneable value lives here or in .env so that nothing is scattered
 across source files.
