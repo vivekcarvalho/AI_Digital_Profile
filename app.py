@@ -450,7 +450,7 @@ def render_chat():
 
     # ── Chat input (Enter to send, Shift+Enter = newline) ─────────────────
     user_input = st.chat_input(
-        "e.g. Tell me about your LangGraph projects …"
+        "e.g. Tell me about your Agentic AI projects …"
     )
 
     if user_input:
