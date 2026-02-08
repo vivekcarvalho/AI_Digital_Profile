@@ -1,4 +1,4 @@
--e git+https://github.com/vivekcarvalho/AI_Digital_Profile.git@647fbcf032456719b917fda5734999c0e0d4733d#egg=ai_profile_website
+-e .
 aiofiles==25.1.0
 aiohappyeyeballs==2.6.1
 aiohttp==3.13.3
