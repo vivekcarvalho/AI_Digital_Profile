@@ -285,18 +285,34 @@ def render_home():
 
     # ── Honours & Awards ──────────────────────────────────────────────────
     render_section_header("🏆", "Honours & Awards")
-    render_award("🏅", "gold",
-                 "On-The-Spot Award – TCS · Nov 2025",
-                 "Architecting & deploying AI-driven analytics products empowering stakeholders with autonomous insights.")
+    render_award("🏆", "gold",
+                 "Winner: AI Hackathon – Agentic AI for Sentiment Intelligence – TCS · Feb 2026",
+                 "Led the design and delivery of an enterprise-grade Agentic AI Stakeholder Sentiment Intelligence " \
+                 "Platform that analyzes multi-channel customer feedback using NLP and autonomous decisioning to " \
+                 "generate unbiased insights, identify pain points, and recommend actionable, scalable improvements " \
+                 "across business units.")
+    render_award("⭐", "gold",
+                 "STAR of the Month Award – TCS · Nov 2025",
+                 "Recognized for exceptional contribution in architecting and deploying AI-driven analytics solutions " \
+                 "that enable stakeholders to independently derive actionable insights through anomaly detection, " \
+                 "alerts, and trend analysis, enhancing productivity, reducing analyst dependency, and supporting " \
+                 "strategic decision-making; acknowledged by executive leadership as a key innovation and " \
+                 "competitive differentiator.")
     render_award("🏅", "gold",
                  "On-The-Spot Award – TCS · Jun 2023",
-                 "Error-free campaign P&L analysis & regulatory-reporting compliance.")
+                 "Awarded for delivering error-free campaign PnL analysis and ensuring regulatory compliance " \
+                 "through accurate, adaptive financial reporting, streamlining processes and enabling data-driven " \
+                 "decision-making while maintaining high standards of precision and control; recognized for " \
+                 "strengthening reporting reliability and supporting business confidence in critical financial insights.")
     render_award("🏅", "gold",
                  "On-The-Spot Award – TCS · Aug 2022",
-                 "Process-improvement excellence & business-critical reporting accuracy.")
+                 "Acknowledged for driving process improvements and ensuring regulatory submission accuracy, " \
+                 "delivering consistent operational excellence and reliable business-critical reporting.")
     render_award("⭐", "gold",
                  "Accenture Celebrate Excellence (ACE) · Nov 2019",
-                 "Innovative analytics solutions eliminating manual interventions across finance, reinsurance, sales & marketing.")
+                 "Recognized for delivering innovative, automation-driven analytics solutions that eliminated " \
+                 "manual intervention across finance, reinsurance, sales, and marketing, significantly reducing " \
+                 "turnaround times and enhancing client value through accurate, precision-led insights.")
 
     # ── Licences & Certifications ─────────────────────────────────────────
     render_section_header("📜", "Licences & Certifications")
