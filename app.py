@@ -126,6 +126,30 @@ def render_home():
 
     # --- TCS projects (newest first) ---
     render_timeline_card(
+        title="Coding a Multimodal (Vision) Language Model (Google PaliGemma) from Scratch (PyTorch)",
+        subtitle="End-to-End Multimodal Transformer Implementation with Vision Encoding, Fusion, and Text Generation",
+        date="Apr 2026",
+        bullets=[
+            "Built a multimodal Vision Language Model (VLM) from scratch in PyTorch, combining a Vision Transformer (ViT) encoder with a Transformer-based language decoder (PaliGemma-style).",
+            "Implemented multimodal fusion via projection layers and autoregressive text generation, incorporating concepts from CLIP/SigLip.",
+            "Engineered advanced components including rotary positional embeddings, grouped query attention (GQA), and KV-cache for efficient inference.",
+            "Successfully integrated and aligned pre-trained Hugging Face weights into the custom architecture for local multimodal inference and validation.",
+            "Applied core skills: PyTorch, multimodal LLM architecture, Vision Transformers, Transformer optimization, inference acceleration, model weight integration."
+        ],
+    )
+    render_timeline_card(
+        title="GPT-2 LLM from Scratch (PyTorch)",
+        subtitle="End-to-End GPT-2 Architecture Implementation with Transformer Blocks and Training Optimization",
+        date="Mar 2026",
+        bullets=[
+            "Built a GPT-2 style Transformer language model from scratch in PyTorch, implementing embeddings, multi-head self-attention, and autoregressive decoding.",
+            "Engineered a full training pipeline with cross-entropy loss, AdamW optimization, gradient clipping, and mixed precision training.",
+            "Solved key challenges in GPU memory management, loss convergence, and attention masking through low-level debugging and optimization.",
+            "Applied core skills: PyTorch, Transformer architecture, LLM engineering, training loop optimization, numerical stability techniques.",
+            "Successfully mapped and loaded pre-trained GPT-2 weights into the custom architecture for local inference, validating implementation fidelity."
+        ],
+    )
+    render_timeline_card(
         title="Enterprise Autonomous Data Analyst",
         subtitle="Production Multi-Agent AI System · LangGraph + LLM",
         date="Jan 2026 · TCS",
