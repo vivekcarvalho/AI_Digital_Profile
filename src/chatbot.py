@@ -261,11 +261,12 @@ class ProfileChatbot:
         try:
             final_state = self.graph.invoke(initial_state)
             reply = final_state["response"]
-        except Exception:
+        except Exception as e:
             reply = (
                 "I hit a small snag processing that — could you try rephrasing? "
                 "I'm happy to help with anything about the profile."
             )
+            # print(e)
 
         self._push("user", query)
         self._push("assistant", reply)

@@ -1,0 +1,33 @@
+[project]
+name = "ai-digital-profile"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "einops>=0.8.2",
+    "faiss-cpu>=1.15.1",
+    "ipykernel>=7.4.0",
+    "langchain>=1.4.5",
+    "langchain-community>=0.4.2",
+    "langchain-core>=1.6.10",
+    "langchain-google-genai>=4.4.1",
+    "langchain-groq>=1.1.3",
+    "langchain-huggingface>=1.2.3",
+    "langchain-openai>=1.7.1",
+    "langchain-qdrant>=1.1.0",
+    "langchain-text-splitters>=1.1.3",
+    "langgraph>=1.2.15",
+    "numpy>=2.5.4",
+    "pandas>=3.0.6",
+    "plotly>=7.1.0",
+    "pydantic>=2.14.1",
+    "pypdf>=6.20.1",
+    "python-docx>=1.2.0",
+    "python-dotenv>=1.2.4",
+    "qdrant-client>=1.19.1",
+    "sentence-transformers<3.0.0",
+    "streamlit>=1.65.0",
+    "tiktoken>=0.14.0",
+    "torchvision>=0.29.1",
+    "transformers<4.46",
+    "unstructured[docx]>=0.27.25",
+]

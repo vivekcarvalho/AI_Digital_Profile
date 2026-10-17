@@ -35,3 +35,6 @@ tiktoken
 
 # Optional visualization
 plotly
+
+# Notebook Execution
+ipykernel
